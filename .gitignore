@@ -13,8 +13,6 @@
 
 
 
-uploads/*
-
 /logs 
 *.log
 
