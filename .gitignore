@@ -11,9 +11,9 @@
 # production
 /build
 
-/uploads
 
-uploads
+
+uploads/*
 
 /logs 
 *.log
