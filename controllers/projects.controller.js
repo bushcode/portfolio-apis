@@ -1,13 +1,25 @@
 const Project = require('../models/project');
 const ProjectValidator = require('../validators/project.js');
 const Helpers = require('../utils/Helpers');
+var cloudinary = require('cloudinary').v2;
 
 const ProjectOps = {};
+
+cloudinary.config({
+	cloud_name: process.env.CLOUD_NAME,
+	api_key: process.env.API_KEY,
+	api_secret: process.env.API_SECRET,
+	secure: true,
+});
 
 ProjectOps.CreateProject = async (req, res, next) => {
 	try {
 		const { file } = req;
-		console.log('file', file);
+
+		const upload = await cloudinary.uploader.upload(file.path, { tags: 'basic_sample' });
+
+		// console.log(upload.secure_url);
+
 		const { title, description, link, stack, repository } = req.body;
 		const { errors, isValid } = ProjectValidator(req.body);
 		if (!isValid) return res.status(400).json(errors);
@@ -20,7 +32,7 @@ ProjectOps.CreateProject = async (req, res, next) => {
 				? stack
 				: stack.split(',').map((stack) => ' ' + stack.trim()),
 			repository,
-			image: file.path,
+			image: upload.secure_url,
 		}).save();
 
 		const projects = await Project.find().where({ isDeleted: false });
