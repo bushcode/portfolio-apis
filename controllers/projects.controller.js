@@ -35,7 +35,7 @@ ProjectOps.CreateProject = async (req, res, next) => {
 			image: upload.secure_url,
 		}).save();
 
-		const projects = await Project.find().where({ isDeleted: false });
+		const projects = await Project.find().where({ isDeleted: false }).sort({ 'createdAt': -1 });
 		return res.status(200).json(projects);
 	} catch (error) {
 		console.log(error);
@@ -45,7 +45,7 @@ ProjectOps.CreateProject = async (req, res, next) => {
 
 ProjectOps.FetchProjects = async (req, res, next) => {
 	try {
-		const projects = await Project.find().where({ isDeleted: false });
+		const projects = await Project.find().where({ isDeleted: false }).sort({ 'createdAt': -1 });
 		if (!projects) return res.status(404).json({ errors: 'No resource found' });
 		return res.status(200).json(projects);
 	} catch (error) {
