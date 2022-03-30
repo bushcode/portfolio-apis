@@ -8,24 +8,22 @@ MailOps.sendMail = async (req, res, next) => {
 	try {
 		const { name, email, message } = req.body;
 		let to = process.env.EMAIL_USER;
-		let transport = nodemailer.createTransport(
-			smtpTransport({
-				service: 'Gmail',
-				auth: {
-					xoauth2: xoauth2.createXOAuth2Generator({
-						user: process.env.EMAIL_USER,
-						pass: process.env.EMAIL_PASS,
-					}),
-				},
-			}),
-		);
+		const transporter = nodemailer.createTransport({
+			service: 'gmail',
+			auth: {
+				user: process.env.EMAIL_USER,
+				pass: process.env.EMAIL_PASS,
+			},
+		});
 		let mailOptions = {
 			from: email,
 			to: to,
-			subject: name + ' | new message!',
-			text: message,
+			subject: 'New Porfolio Message',
+			text: `You have a new message from: ${name},
+					Email: ${email},
+					Message: ${message},`,
 		};
-		let info = await transport.sendMail(mailOptions);
+		let info = await transporter.sendMail(mailOptions);
 		console.log('Message sent: %s', info.messageId);
 		return res.status(200).json({ message: 'Message sent!' });
 	} catch (error) {

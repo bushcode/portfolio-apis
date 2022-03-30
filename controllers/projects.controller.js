@@ -20,13 +20,14 @@ ProjectOps.CreateProject = async (req, res, next) => {
 
 		// console.log(upload.secure_url);
 
-		const { title, description, link, stack, repository } = req.body;
+		const { title, description, link, stack, repository, isLab } = req.body;
 		const { errors, isValid } = ProjectValidator(req.body);
 		if (!isValid) return res.status(400).json(errors);
 
 		const newProject = await new Project({
 			title,
 			description,
+			isLab,
 			link,
 			stack: Array.isArray(stack)
 				? stack
