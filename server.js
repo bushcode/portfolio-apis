@@ -28,7 +28,6 @@ app.use(express.json());
 mongoose
 	.connect(db, {
 		useNewUrlParser: true,
-		useFindAndModify: false,
 		useUnifiedTopology: true,
 	})
 	.then(() => {
