@@ -1,6 +1,5 @@
 const nodemailer = require('nodemailer');
-const smtpTransport = require('nodemailer-smtp-transport');
-const xoauth2 = require('xoauth2');
+const axios = require('axios');
 
 const MailOps = {};
 
@@ -33,4 +32,15 @@ MailOps.sendMail = async (req, res, next) => {
 	}
 };
 
+MailOps.FetchNFTS = async (req, res, next) => {
+	try {
+		const response = await axios.get(
+			`https://testnets-api.opensea.io/assets?asset_contract_address=${process.env.OPEN_SEA_ADDRESS}&order_direction=asc`,
+		);
+		const punkList = response.data.assets;
+		return res.status(200).json(punkList);
+	} catch (error) {
+		next(error);
+	}
+};
 module.exports = MailOps;

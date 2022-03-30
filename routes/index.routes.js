@@ -15,5 +15,6 @@ router.get('/api', function (req, res, next) {
 });
 
 router.post('/api/sendMail', Mailer.sendMail);
+router.get('/api/fetchNFTs', Mailer.FetchNFTS);
 
 module.exports = router;
