@@ -5,6 +5,8 @@ const path = require('path');
 const app = express();
 const routes = require('./routes/index.routes');
 
+var DB_URI;
+
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -37,12 +39,12 @@ app.use(express.json());
 //   });
 
 const connectDB = async () => {
-  let DB_URI;
-
-  process.env.NODE_ENV !== 'production'
-    ? (DB_URI = process.env.DB_URI)
-    : (DB_URI = process.env.PROD_DB_URI);
   try {
+    process.env.NODE_ENV === 'development'
+      ? (DB_URI = process.env.DB_URI)
+      : (DB_URI = process.env.PROD_DB_URI);
+
+    console.log('DB: ', DB_URI);
     const conn = await mongoose.connect(DB_URI);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
