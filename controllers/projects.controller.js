@@ -37,7 +37,6 @@ ProjectOps.CreateProject = async (req, res, next) => {
     const projects = await Project.find();
     return res.status(200).json(projects);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -45,7 +44,7 @@ ProjectOps.CreateProject = async (req, res, next) => {
 ProjectOps.FetchProjects = async (req, res, next) => {
   try {
     const projects = await Project.find();
-    console.log(projects);
+    // console.log(projects);
     if (!projects) return res.status(404).json({ errors: 'No resource found' });
     return res.status(200).json(projects);
   } catch (error) {
@@ -76,7 +75,7 @@ ProjectOps.DeleteProject = async (req, res, next) => {
       },
       { new: true }
     );
-    console.log(project);
+    // console.log(project);
     const projects = await Project.find().where({ isDeleted: false });
     return res.status(200).json(projects);
   } catch (error) {
